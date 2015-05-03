@@ -1,7 +1,7 @@
 ---
 layout: post
 title: size controlled allocation dection
-category: opinion
+category: paper 
 description: 堆分配大小可控检测分析
 ---
 
