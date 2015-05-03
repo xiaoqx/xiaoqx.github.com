@@ -9,4 +9,4 @@ category: blog
 
 
 
-[XiaoQixue]:    http://XiaoQixue.com  "XiaoQixue"
+[BeiYuu]:    http://beiyuu.com  "BeiYuu"
