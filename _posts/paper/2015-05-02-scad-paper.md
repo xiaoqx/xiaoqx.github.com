@@ -1,9 +1,17 @@
 ---
 layout: post
-title: size controlled allocation dection
+title: 堆分配大小可控检测分析
 category: paper 
 description: 堆分配大小可控检测分析
 ---
+
+## 介绍
+
+## 背景
+
+## 主要内容
+
+##
 
 ##最初的简单
 从第一代iPhone出来，简单这个概念，便疯样的传开来。我怀疑过这是否绝对正确，最终还是服了。
