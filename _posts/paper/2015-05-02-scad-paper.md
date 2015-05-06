@@ -1,67 +1,76 @@
 ---
 layout: post
 title: 堆分配大小可控检测分析
-category: paper 
+category: paper
 description: 堆分配大小可控检测分析
 ---
 
 ## 介绍
 
+不当内存操作一直是引发软件漏洞的主要原因之一。堆分配大小可控（CMA）是指当动态内存分配的关键参数可以被外界输入控制，恶意用户可以通过精心构造输入数据导致非预期的内存分配。本文讨论了CMA可能引发的相关安全问题以及CMA的检测方法。论文提出了一种新颖的CMA检测方法，主要通过结合静态路径分析和路径导向符号执行技术的优势，系统的检测目标代码中的CMA问题。论文在经典的符号执行引擎KLEE的基础上，实现了CMA检测原型系统SCAD；通过对Linux系统常用的工具程序Coreutils进行测试，SCAD发现了10个CMA相关的问题，其中3个属于未公开漏洞,其中3个是未公开的。三个包含bug的工具分别是split、cut和shuf，其中split和cut的CMA bug将导致内存耗尽并自动退出，[shuf]中的bug可以直接导致程序崩溃，在我们报告给开发者24小时内就得到了修复。
+
+* split －CT
+* cut -c3333333333333
+* [shuf] -er
+
+实验结果表明，SCAD的导向路径搜索算法与KLEE提供的8个路径搜索算法相比具有明显优势；针对内存分配相关的代码，SCAD的导向符号执行相比传统的符号执行引擎具有更高的代码覆盖率。
+
 ## 背景
+在多数编程语言中，程序员可以静态、自动、动态的管理内存。例如，在C语言中，通过库函数malloc来申请堆内存空间，程序可以通过内存指针来访问堆中的数据，当内存不再被使用时，可以调用free函数来释放。
+	动态内存分配的灵活性给程序带来了很多便利和优势，同时也导致了不少可能存在的问题。这些问题可能导致程序崩溃甚至安全漏洞，通常表现为段错误。动态内存分配常常导致的错误包括：
+*	1．没有检测失败的分配而导致错误。
+*	2．内存泄露。
+*	3．逻辑错误。动态内存分配的使用有着自己的逻辑：分配-使用-释放。如果违反了这个逻辑，将可能导致错误。比如悬挂指针（dangling pointer），野指针（wild pointer），多次释放（double free）等。
+
+CMA可以引发上述大部分内存错误，导致程序出现bug。
 
 ## 主要内容
 
-##
+请参考论文。
 
-##最初的简单
-从第一代iPhone出来，简单这个概念，便疯样的传开来。我怀疑过这是否绝对正确，最终还是服了。
+## 使用说明
 
-碎片化的生活让人类的注意力很难集中3分钟，且有千千万的选择，任何一点负面的感受，会立刻遭到用户唾弃。物质、文化匮乏的时代，故作繁杂，可以脱颖而出，但现在能打动你的肯定是左边。
+待续。
 
-![Apple Remote](http://ww2.sinaimg.cn/bmiddle/5e0bba51gw1dyxy98zixmj.jpg)
+## 漏洞分析
 
-##简单才可依赖
-有些句子，看起来懂，也经常说，比如上面标题这句，但当我看到[《差速器原理》][chasuqi]的视频时，才真正懂了这句话：
-
-<p style="text-align:center"><embed src="http://player.youku.com/player.php/sid/XNDkwMTg0MDI0/v.swf" quality="high" width="480" height="400" align="middle" allowScriptAccess="sameDomain" allowFullscreen="true" type="application/x-shockwave-flash"></embed></p>
-
-##蔓延的简单
-大概是工作的关系，渐渐追求简单的思维蔓延到了生活中，甚至到了本没有标准的艺术范畴。来看下图：
-
-![Focus Inside](http://img1.bitautoimg.com/autoalbum/files/20120319/123/23575912395576_1844692_7.jpg)
-
-搭朋友的车，这中控系统功能确实强大，但是不得不说这界面的设计师，还活在上个世纪，早该被解雇了。只因这不是选车最值得考虑的部分，不然朋友肯定会选择更好的。
-
-甚至到了没有标准的艺术范畴，简单都成了标准：
-
-![My Photo](http://ww3.sinaimg.cn/large/a74eed94jw1e0mmo1xa2kj.jpg)
-
-也不知是否因为我看娱乐节目太多，导致智商降低，对于文学、电影作品，甚至都不能接受故弄玄虚，我不愿去想，也不愿去猜。比如[《一代宗师》][2]故事支离破碎，台词游离，就连王家卫最拿手的气氛渲染，也比[《花样年华》][3]差远了。复杂了，失焦了，我也没有耐心去思索。
-
-![The Grandmasters](http://ww4.sinaimg.cn/bmiddle/62275834jw1e0mlp67dv4j.jpg)
-
-##简单的背后
-做加法很容易，把所见所想全写上就好，做到简单却要经过谨慎的思考。
-
-简单的背后不应该是简陋。对比[豆瓣FM][4]和[虾米FM][5]就能理解，豆瓣FM简陋的背后带来了无尽的不安全感，无法控制的挫败感，纵然你能满足大部分用户，但也绝不应该放弃更苛刻的用户，因为作为创造者，你自己也是那些苛求的需要者。
-
-当然，我知道豆瓣FM有他的苦衷，只是举个例子，做减法并不是舍弃，而是合理的隐藏。
-
-![The Next Day](http://ww1.sinaimg.cn/large/a74ecc4cjw1e0mnhp3ijtj.jpg)
-
-[Next Day][6]就是这样，简单美妙，但是当你想要更多的时候，控制权也完全交到你手中，并且很高效。
-
-##TL;DR
-错过这篇废话而无用的文章，你是赚到啦！
+### BugAnalysis - shuf
+       2014-02-23 15:02   Qixue Xiao <xiaoqixue_1@163.com>
+=========================================================================
 
 
+### Bug overview
+
+	shuf -er or shuf -eer [ segment fault]
+	impact [coreutils 8.22 ]
+
+```
+[15:03:59]xqx@server:~/data/xqx/projects/coreutils-8.22$ ./obj-gcov/src/shuf -er
+Segmentation fault (core dumped)
+
+```
+
+### Analysis
+
+when shuf execute -e without give the expected input lines, it will assign n_lines to 0 in "write_random_lines" while the "repeat" (-r) be set. and this var will be as the genmax parameter when "randint_genmax" function called. the code as follows in shuf.c:
+
+```
+369   for (i = 0; i < count; i++)
+370     {
+371       const randint j = randint_choose (s, n_lines);
+372       char *const *p = lines + j;
+373       size_t len = p[1] - p[0];
+374       if (fwrite (p[0], sizeof *p[0], len, stdout) != len)
+375         return -1;
+376     }
+377
+
+```
+
+'j' will be a random number between 0-0xffffffffffffffff in my 64bit ubuntu, and 'p' will be a unexpected point which will be access next. when p point to an ilegal memory, it will be error when access it, which may be result in a Segmentation fault.
+
+if an attacker could control the random which gened by randint_choose, it may be get the infomation without an legal authority.
 
 
-[BeiYuu]:    http://beiyuu.com  "BeiYuu"
-[1]:    {{ page.url}}  ({{ page.title }})
-[2]: http://movie.douban.com/subject/3821067/
-[3]: http://movie.douban.com/subject/1291557/
-[4]: http://douban.fm/
-[5]: http://xiami.fm/
-[6]: https://itunes.apple.com/us/app/next-day/id491352621?mt=8
-[chasuqi]: http://v.youku.com/v_show/id_XNDkwMTg0MDI0.html
+
+[shuf]: http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16855
