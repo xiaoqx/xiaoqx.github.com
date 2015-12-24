@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      第一次blog
-category: blog
+category: 
 description: 为共享技术而写
 ---
 
