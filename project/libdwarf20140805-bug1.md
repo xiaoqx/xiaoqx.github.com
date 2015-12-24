@@ -35,5 +35,5 @@ libdwarf任意写漏洞分析与利用
 * /bin/sh 放到文件中，但如何确定其地址；
 
 解决上述问题后，可稳定的执行代码，如下图所示：
-![成功执行shell](/images/libdwarf-exploit.png)
+![成功执行shell](./images/libdwarf-exploit.png)
 
