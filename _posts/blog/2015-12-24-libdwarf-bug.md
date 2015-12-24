@@ -1,7 +1,7 @@
 ---
 layout: post
 title: libdwarf 0day 分析
-category: project
+category: blog
 description: libdwarf漏洞的分析与利用
 ---
 
