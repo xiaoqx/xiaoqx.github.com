@@ -84,7 +84,13 @@ afl使用了多种Fuzzing策略（数据变异方法），
 由于linux启动新的进程通常使用fork+exec** 来实现，fork产生一个新的进程，exec将目标代码加载到这个新进程。
 而当启动的新进程就是父进程本身的程序时，就可以不需要exec。afl利用这一点，在被测试的目标进程中插桩来完成fork，
 从而省掉了exec这个步骤，详细介绍可参考
-[1][fuzzing binaries without execve](http://lcamtuf.blogspot.com/2014/10/fuzzing-binaries-without-execve.html)
+[fuzzing binaries without execve](http://lcamtuf.blogspot.com/2014/10/fuzzing-binaries-without-execve.html)
+当然，实现这种方法将带来其他的问题，比如文件描述符在父进程和子进程中是共用的，子进程使用完描述符后，父进程在下次
+fork的时候需要恢复到原来的位置，所幸的是fork server在main函数前，通常并没有多少文件描述符需要管理。如果要将fork server
+往后移，则需要更多得考虑该问题。
+另一个需要解决的问题是对子进程的监控，通常是通过对子进程结束状态的查询来判断是否异常结束，而在fork server的机制下，fuzzer
+已变成了grandparent, 不能直接对被测试进程进行查询，afl通过fork server（被测试进程的父进程）来查询，通过管道将结果信息传回给
+fuzzer，实现crash等异常的检测。
 
 #### 选择fuzzing 种子（culling the corpus）
 
