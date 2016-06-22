@@ -61,13 +61,30 @@ alf-llvm-pass主要在每个basic block（bb）前插入代码记录执行情况
 afl中的共享内存是利用系统V中的IPC来实现的，具体通过shmget，shmat等函数完成。
 
 afl-llvm-rt.o.c主要是提供了一些初始化操作，相当于在目标程序执行main函数之前完成一些操作。
-主要通过constructor来实现，在__afl_manual_init函数中完成了获取共享内存地址，以及start_forkserver 。
+主要通过constructor来实现，在__afl_manual_init函数中完成了获取共享内存地址，以及start_forkserver_ 。
 
 当一次具体执行（即一次fuzz测试完成）后，共享内存中将记录该次执行所覆盖到的所有边的次数。
 
+### Fuzzing的异常检测
+afl主要检测crash和hang两种异常。    
+crash是基于linux的coredump机制来完成的（？），fuzzing执行的target程序结束后通过WIFSIGNALED来判断。
+WIFSIGNALED这个函数的功能是检测进程的结束是否是因为捕获信号而终止，如果是则认为是crash。
+hang主要是通过设计超时来检测，如果fuzzing执行的target程序在运行结束后，对child_timed_out标志进行判断，
+如果被设置了，则认为是hang。
+
 
 #### Fuzzing策略
+afl使用了多种Fuzzing策略（数据变异方法），
 
+值得注意的是afl实现了一种fork-server的fuzzing方法，使得其测试效率提升了至少2倍（a factor of two）。
+
+##### fork server
+大致介绍一下我理解的fork server（由于linux编程基础较差，也许理解的有误）。
+
+由于linux启动新的进程通常使用fork+exec** 来实现，fork产生一个新的进程，exec将目标代码加载到这个新进程。
+而当启动的新进程就是父进程本身的程序时，就可以不需要exec。afl利用这一点，在被测试的目标进程中插桩来完成fork，
+从而省掉了exec这个步骤，详细介绍可参考
+[1][fuzzing binaries without execve](http://lcamtuf.blogspot.com/2014/10/fuzzing-binaries-without-execve.html)
 
 #### 选择fuzzing 种子（culling the corpus）
 
