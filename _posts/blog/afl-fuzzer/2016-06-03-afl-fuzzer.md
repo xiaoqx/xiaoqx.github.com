@@ -93,6 +93,12 @@ fork的时候需要恢复到原来的位置，所幸的是fork server在main函�
 fuzzer，实现crash等异常的检测。
 
 #### 选择fuzzing 种子（culling the corpus）
+在afl-cmin中有单独实现。
+主要原理是通过每个种子覆盖的边（分支）来选择，且优先选择size小的。
+
+具体做法如下：1）基于插桩的binary执行每个种子，获得边覆盖的情况；
+2）从最小的种子开始，如果有没有覆盖的边，则将该种子作为备选；如果没有，则丢弃；
+3）直到所有种子全部遍历完。
 
 
 #### 优化fuzzing输入（trimming input files）
