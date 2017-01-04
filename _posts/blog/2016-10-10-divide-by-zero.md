@@ -11,7 +11,7 @@ category: blog
 
 
 首先除零在计算机世界是个问题，可以导致程序异常退出，并被列为安全问题。
-参见[CWE](CWE)(https://cwe.mitre.org/data/definitions/369.html)
+参见[CWE](https://cwe.mitre.org/data/definitions/369.html)
 
 除零问题通常采用动态的检测方法，当执行除法操作时判断被除数是否为0，是则抛出异常。
 针对不同平台有不同的检测方法，可参考：
@@ -26,4 +26,4 @@ category: blog
 不少缺点，如路径爆炸等。
 
 专门针对除零进行研究的论文并不多见，通常会在检测整数相关问题时顺带研究，比如kint等。
-见附件。
+<!--见附件。-->
