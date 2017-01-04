@@ -1,3 +1,10 @@
+---
+layout: post
+title: Rethinking of divide-by-zero 
+category: blog
+description: 关于除零的一些思考
+---
+
 
 关于除零的一些思考
 ========
