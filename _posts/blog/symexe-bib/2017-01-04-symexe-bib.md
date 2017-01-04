@@ -13,4 +13,9 @@ description: a bibliography of papers and tools related to symexe
 
 |标题|发表|时间|作者|
 |:-----|:-----:|:----:|-------|
-|Proving Memory Safety of the ANI Windows Image Parser Using Compositional Exhaustive Testing |VMCAI |2015 |Maria Christakis, Patrice Godefroid|
+
+Proving Memory Safety of the ANI Windows Image Parser Using Compositional Exhaustive Testing
+VMCAI
+2015
+Maria Christakis, Patrice Godefroid|
+
